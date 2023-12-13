@@ -6,7 +6,7 @@ const Client = require('pg')
 
 export const pool: typeof Client = new Pool({
     user: 'postgres',
-    password: 'password',
+    password: 'Shiva@123',
     database: 'Library_Management_System',
     host: 'localhost',
     port: 5432
