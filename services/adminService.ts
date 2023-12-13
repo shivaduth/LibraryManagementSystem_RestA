@@ -12,7 +12,7 @@ export const addBook = async (body: Request["body"], reqUser: User): Promise<Boo
         try {
             
             const validate: Books | null = bookValidator(body, reqUser);
-            if(validate)// validateBook
+            if(validate)
                 return (validate);
             const librarianId: string | undefined = reqUser.id
             let regexp = /[a-z0-9]+/gi;
