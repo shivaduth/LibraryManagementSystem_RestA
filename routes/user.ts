@@ -7,9 +7,7 @@ const services = require('../services/logService');
 const router = express.Router();
 
 
-// router.get('/simple', (req :Request, res: Response)=>{
-//     res.send('Hello');
-// })
+
 
 router.post('/register', controller.registerUser);
 
