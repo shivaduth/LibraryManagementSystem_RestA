@@ -152,32 +152,3 @@ export function bookValidator(body: Request["body"], reqUser: User): Books | nul
 
 
 
-// /**
-//  * This function is to remove book from db by librarian i.e admin
-//  * and returns Books object.
-//  * @param {string} bookId is a books id of type string
-//  * @param {User} reqUser is req.user which is an object of type User.
-//  * @returns {Promise<Books>} Books is an object.   
-// */
-// export const removeBook = async (bookId: string, reqUser: User): Promise<Books>=>{
-//     return new Promise(async (resolve, reject) => {
-//         try {
-//             if(reqUser.role != 'admin')
-//                 return resolve({status : RES_STATUS.UNATHURIZED, message: 'Forbidden not allowed'});
-//             if(!bookId)
-//                 return resolve({status: RES_STATUS.BADREQUEST, message: 'Book id required'});
-//             const check = await databaseQuery(adminQueries.removeBook.book, [bookId]);
-//             if(!check.rowCount)
-//                 return resolve({status: RES_STATUS.NOTFOUND, message: 'Book not exists '});
-//             if(check.rows[0].issued_count > 0)
-//                 return resolve({status: RES_STATUS.BADREQUEST, message: 'Cannot delete because book is issued'});
-//             await databaseQuery(adminQueries.removeBook.deleteBook, [bookId]);
-//             //const ans = check.rows[0];
-//             const ans = (({ id, name, available_count }) => ({ id, name, available_count}))(check.rows[0])
-//             return resolve({status: RES_STATUS.SUCCESS,  book: ans});
-//         }
-//         catch (err) {
-//             return reject(err);
-//         }
-//     });
-// }
