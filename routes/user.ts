@@ -1,17 +1,16 @@
 import { Request, Response, NextFunction, json } from 'express';
-import express from 'express';
-
+import {Router} from 'express';
+const router = Router();
 
 const controller = require('../controllers/userController'); 
 const services = require('../services/logService');
-const router = express.Router();
 
 
 
 
 router.post('/register', controller.registerUser);
 
-router.post('/login', controller.userLogger);
+router.post('/login', controller.loginUser);
 
 router.post('/addBook', services.authenticateToken, controller.setBooks);
 
@@ -92,4 +91,3 @@ export default router;
 
 
 
-// router.delete('/removeBook/:id', services.authenticateToken, controller.deleteBook);
