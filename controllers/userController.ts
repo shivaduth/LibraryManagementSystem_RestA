@@ -21,7 +21,7 @@ export const registerUser = async (req: IGetUserAuthInfoRequest, res: Response):
 }
 
 
-export const userLogger = async (req: IGetUserAuthInfoRequest, res: Response, next: NextFunction): Promise<void> => {
+export const loginUser = async (req: IGetUserAuthInfoRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
         const result: Users = await logServices.userLogin(req.body.username, req.body.password, Object.values(req.body).length);
         if(result.message)
@@ -147,7 +147,7 @@ export const getBooksData =async (req: IGetUserAuthInfoRequest, res: Response): 
 
 module.exports = {
     registerUser: registerUser,
-    userLogger: userLogger,
+    loginUser: loginUser,
     setBooks: setBooks,
     getAvailBooks: getAvailBooks,
     requestBook: requestBook,
@@ -208,22 +208,3 @@ module.exports = {
 
 
 
-// /**
-//  * This function is a controller function for removeBook route and returns void. 
-//  * @param {IGetUserAuthInfoRequest} req is request of IGetUserAuthInfoRequest which extends express.Request 
-//  * @param {Response} res is response of express.Response. 
-//  * @returns {Promise<void>}  
-// */
-// export const deleteBook =async (req: IGetUserAuthInfoRequest, res: Response): Promise<void> => {
-//     try {
-//         const result: Books = await adminServices.removeBook(req.params.id, req.user);
-//         if(result.message)
-//             res.status(result.status).json({message: result.message});
-//         else
-//             res.status(result.status).json(result.book);
-//     }
-//     catch (err: unknown) {
-//         if(err instanceof Error)
-//             res.status(500).json({message: err.message});
-//     }
-// }
