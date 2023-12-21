@@ -1,0 +1,942 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Library Management API",
+        "description": "Library maintenence api",
+        "version": "1.0.0",
+        "contact": {
+            "name": "shivaduth",
+            "email": "shivaduth@gmail.com"
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        },
+        "schemas": {
+            "RequestBody_RegisterUser": {
+                "type": "object",
+                "required": [
+                    "role",
+                    "name",
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "role": {
+                        "type": "string",
+                        "description": "Role of user"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Name of user"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "Email of user"
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "Password of user"
+                    }
+                },
+                "example": {
+                    "role": "user",
+                    "name": "tushar",
+                    "email": "tushar@gmail.com",
+                    "password": "12224"
+                }
+            },
+            "RequestBody_LoginUser": {
+                "type": "object",
+                "required": [
+                    "username",
+                    "password"
+                ],
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "description": "Email of user"
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "Password of user"
+                    }
+                },
+                "example": {
+                    "username": "shiva@gmail.com",
+                    "password": "12224"
+                }
+            },
+            "RequestBody_RequestBook": {
+                "type": "object",
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "name of book"
+                    }
+                },
+                "example": {
+                    "name": "DSA"
+                }
+            },
+            "RequestBody_AddBook": {
+                "type": "object",
+                "required": [
+                    "name",
+                    "available_count"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Name of book"
+                    },
+                    "available_count": {
+                        "type": "number",
+                        "description": "Available count of book"
+                    }
+                },
+                "example": {
+                    "name": "DSA",
+                    "available_count": 5
+                }
+            },
+            "ResponseBody_LoginUser": {
+                "type": "object",
+                "properties": {
+                    "accessToken": {
+                        "type": "string",
+                        "description": "Access token of user"
+                    }
+                },
+                "example": {
+                    "accessToken": "e8c3fde5-e371-4eb2-b230-cf52f4a5b53be8c3fde5-e371-4eb2-b230-cf52f4a5b53be8c3fde5-e371-4eb2-b230-cf52f4a5b53b"
+                }
+            },
+            "ResponseBody_RegisterUser": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "description": "Message of error"
+                    }
+                },
+                "example": {
+                    "message": "User registered successfully"
+                }
+            },
+            "ResponseBody_AddBook": {
+                "type": "object",
+                "required": [
+                    "name",
+                    "available_count",
+                    "issued_count"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Name of book"
+                    },
+                    "available_count": {
+                        "type": "number",
+                        "description": "Available count of book"
+                    },
+                    "issued_count": {
+                        "type": "number",
+                        "description": "Issued count of book"
+                    }
+                },
+                "example": {
+                    "name": "DSA",
+                    "available_count": 5,
+                    "issued_count": 0
+                }
+            },
+            "ResponseBody_AvailableBooks": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "required": [
+                        "name",
+                        "available_count"
+                    ],
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "Name of book"
+                        },
+                        "available_count": {
+                            "type": "number",
+                            "description": "count"
+                        }
+                    },
+                    "example": {
+                        "name": "DSA",
+                        "available_count": 5
+                    }
+                }
+            },
+            "ResponseBody_RequestBook": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Name of book"
+                    }
+                },
+                "example": {
+                    "name": "DSA"
+                }
+            },
+            "ResponseBody_IssuedBooks": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "required": [
+                        "name"
+                    ],
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "Name of book"
+                        }
+                    },
+                    "example": {
+                        "name": "DSA"
+                    }
+                }
+            },
+            "ResponseBody_ReturnBook": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Name of book"
+                    },
+                    "available_count": {
+                        "type": "number",
+                        "description": "Available count of book"
+                    }
+                },
+                "example": {
+                    "name": "DSA",
+                    "available_count": 5
+                }
+            },
+            "ResponseBody_Users": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "username": {
+                            "type": "string",
+                            "description": "Username of student"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "Name of student"
+                        }
+                    },
+                    "example": {
+                        "username": "tushar@gmail.com.com",
+                        "name": "tushar"
+                    }
+                }
+            },
+            "ResponseBody_Message": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "description": "Message of error"
+                    }
+                },
+                "example": {
+                    "message": "error"
+                }
+            }
+        }
+    },
+    "paths": {
+        "/register": {
+            "post": {
+                "tags": [
+                    "Library Management API"
+                ],
+                "summary": "Registering New user",
+                "description": "should be json",
+                "requestBody": {
+                    "description": "Requires role, name, email and password",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RequestBody_RegisterUser"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Registration",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_RegisterUser"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": [
+                    "Library Management API"
+                ],
+                "summary": "Login user",
+                "description": "should be json",
+                "requestBody": {
+                    "description": "Requires username and password",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RequestBody_LoginUser"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Token of user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_LoginUser"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid Authorization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/addBook": {
+            "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "Library Management API"
+                ],
+                "summary": "Add books in library db",
+                "description": "should be json",
+                "requestBody": {
+                    "description": "Requires name and available_count",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RequestBody_AddBook"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Object of book",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_AddBook"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid Authorization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/availableBooks": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "Library Management API"
+                ],
+                "summary": "Get available books from library db",
+                "responses": {
+                    "200": {
+                        "description": "Array of books i.e of objects",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_AvailableBooks"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid Authorization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/requestBook": {
+            "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "Library Management API"
+                ],
+                "summary": "Request book to issue",
+                "requestBody": {
+                    "description": "Requires Book id",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RequestBody_RequestBook"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Issued books of user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_RequestBook"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid Authorization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/issuedBooks": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "Library Management API"
+                ],
+                "summary": "Get issued books by user",
+                "responses": {
+                    "200": {
+                        "description": "Issued books of user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_IssuedBooks"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/returnBook/{bookName}": {
+            "put": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "Library Management API"
+                ],
+                "summary": "Returning the book",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "bookName",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "required": true,
+                            "decription": "The book name"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sucessful return of book",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_ReturnBook"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid Authorization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/getStudentsByBookName/{bookName}": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "Library Management API"
+                ],
+                "summary": "Get students data by issued book name",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "bookName",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "required": true,
+                            "decription": "The book name"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Array of students",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Users"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid Authorization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/getBooksByUserName/{userName}": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "Library Management API"
+                ],
+                "summary": "Get issued books by user id",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "userName",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "required": true,
+                            "decription": "The user name"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Array of books",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_IssuedBooks"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid Authorization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseBody_Message"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
